@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "teb-mesada",
+          "configurations": {
+            "web": "1:536815664919:web:8fff4d117aaecaa4e64152"
+          }
+        }
+      }
+    }
+  },
+
+  "hosting":{
+        "public":"build/web",
+        "ignore":[
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites":[{
+            "source":"**",
+            "destination":"/index.html"
+        }]
+    }    
+
+}
