@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teb_mesada/core/widget/about_widget.dart';
 import 'package:teb_mesada/core/widget/main_screen_structure_widget.dart';
 import 'package:teb_mesada/core/widget/year_month_selector_widget.dart';
 import 'package:teb_mesada/features/allowance/widget/allowance_amount_widget.dart';
@@ -87,6 +88,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                       //calendar
                       const SizedBox(height: 20),
                       ScheduleCalendarWidget(family: _family, user: _user, childUser: _childUser),
+                      AboutWidget(),
                     ],
                   );
                 }
@@ -137,6 +139,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                     date: _selectedDate,
                     onRemove: () => setState(() {}),
                   ),
+                  AboutWidget(),
                 ],
               );
             }
@@ -177,7 +180,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
 
       _initializing = false;
     }
-    
+
     return MainScreenStructureWidget(
       user: _user,
       family: _family,

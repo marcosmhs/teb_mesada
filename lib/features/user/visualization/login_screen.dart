@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:teb_mesada/core/routes.dart';
+import 'package:teb_mesada/core/widget/about_widget.dart';
 import 'package:teb_mesada/features/user/model/user.dart';
 import 'package:teb_mesada/features/user/user_controller.dart';
 import 'package:teb_package/control_widgets/teb_buttons_line.dart';
@@ -194,6 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: 50),
+              AboutWidget(),
             ],
           ),
         ),
