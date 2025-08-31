@@ -10,7 +10,7 @@ import 'package:image/image.dart';
 import 'package:teb_mesada/core/routes.dart';
 import 'package:teb_mesada/features/user/access_log/access_log_controller.dart';
 import 'package:teb_mesada/features/user/model/user.dart';
-import 'package:teb_mesada/features/user/user_local_data_controller.dart';
+import 'package:teb_mesada/core/local_data_controller.dart';
 
 import 'package:teb_package/util/teb_return.dart';
 import 'package:teb_package/util/teb_util.dart';
@@ -40,7 +40,7 @@ class UserController {
       AdmAccessLogController().add(email: user.email, success: false, observation: e.toString());
       return {'TebReturn': TebReturn.error(e.toString())};
     }
-    if (saveLocalUserData) UserLocalDataController().saveUser(user: _currentUser);
+    if (saveLocalUserData) LocalDataController().saveUser(user: _currentUser);
 
     loginReturn = {
       'TebReturn': TebReturn.sucess,
@@ -51,22 +51,28 @@ class UserController {
 
   void logoff() {
     clearCurrentUser();
-    UserLocalDataController().clearUserData();
+    LocalDataController().clearUserData();
+    LocalDataController().clearSelectedChildData();
   }
 
   Future<bool> canLoginByUserLocalData() async {
-    var userLocalDataController = UserLocalDataController();
+    var userLocalDataController = LocalDataController();
     await userLocalDataController.chechLocalData();
 
     if (userLocalDataController.localUser.id.isEmpty) return false;
 
-    var loginReturn = await login(user: userLocalDataController.localUser, saveLocalUserData: false);
+    var loginReturn = await login(
+      user: userLocalDataController.localUser,
+      saveLocalUserData: false,
+    );
 
     return loginReturn['TebReturn'].returnType == TebReturnType.sucess;
   }
 
   Future<User> getUserbyEmail({required String email}) async {
-    var userQuery = FirebaseFirestore.instance.collection(User.collectionName).where("email", isEqualTo: email);
+    var userQuery = FirebaseFirestore.instance
+        .collection(User.collectionName)
+        .where("email", isEqualTo: email);
 
     final users = await userQuery.get();
     final dataList = users.docs.map((doc) => doc.data()).toList();
@@ -79,7 +85,10 @@ class UserController {
   }
 
   Future<User> getUserById({required String id}) async {
-    final userDataRef = await FirebaseFirestore.instance.collection(User.collectionName).doc(id).get();
+    final userDataRef = await FirebaseFirestore.instance
+        .collection(User.collectionName)
+        .doc(id)
+        .get();
     final userData = userDataRef.data();
 
     if (userData == null) {
@@ -131,13 +140,13 @@ class UserController {
       if (user.userType == UserType.child) {
         if (user.childLocalPhotoPath.isNotEmpty) await _fireStoreImageManager(user: user);
       } else {
-        UserLocalDataController().saveUser(user: user);
+        LocalDataController().saveUser(user: user);
         _currentUser = User.fromMap(map: user.toMap);
       }
 
       return TebReturn.sucess;
     } on fb_auth.FirebaseException catch (e) {
-      return TebReturn.error(e.code);
+      return TebReturn.authSignUpError(e.code);
     } catch (e) {
       return TebReturn.error(e.toString());
     }

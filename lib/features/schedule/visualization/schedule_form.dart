@@ -10,7 +10,7 @@ import 'package:teb_mesada/features/schedule/schedule_controller.dart';
 import 'package:teb_mesada/features/schedule/widget/schedule_frequency_widget.dart';
 import 'package:teb_mesada/features/user/model/user.dart';
 import 'package:teb_mesada/features/user/user_controller.dart';
-import 'package:teb_mesada/features/user/user_local_data_controller.dart';
+import 'package:teb_mesada/core/local_data_controller.dart';
 import 'package:teb_mesada/features/user/widget/child_widget.dart';
 import 'package:teb_package/control_widgets/teb_buttons_line.dart';
 import 'package:teb_package/control_widgets/teb_checkbox.dart';
@@ -364,7 +364,7 @@ class _ScheduleFormState extends State<ScheduleForm> {
       _schedule = arguments['schedule'] ?? Schedule();
 
       if (_schedule.childUserId.isEmpty) {
-        UserLocalDataController().getLocalSelectedChild.then((childUser) {
+        LocalDataController().getLocalSelectedChild.then((childUser) {
           setState(() {
             _childUser = childUser;
             _schedule.childUserId = childUser.id;

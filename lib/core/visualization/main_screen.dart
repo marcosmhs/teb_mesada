@@ -12,7 +12,7 @@ import 'package:teb_mesada/core/widget/feedback_animation_widget.dart';
 import 'package:teb_mesada/features/schedule/widget/schedule_item_widget.dart';
 import 'package:teb_mesada/features/schedule/widget/schedule_list_widget.dart';
 import 'package:teb_mesada/features/user/model/user.dart';
-import 'package:teb_mesada/features/user/user_local_data_controller.dart';
+import 'package:teb_mesada/core/local_data_controller.dart';
 import 'package:teb_mesada/features/user/widget/child_widget.dart';
 import 'package:teb_package/teb_package.dart';
 
@@ -167,7 +167,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
     if (_user.userType == UserType.child) {
       _childUser = _user;
     } else {
-      UserLocalDataController().getLocalSelectedChild.then((childUser) {
+      LocalDataController().getLocalSelectedChild.then((childUser) {
         setState(() => _childUser = childUser);
       });
     }
@@ -196,7 +196,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                   ? null
                   : (childUser) {
                       if (childUser.id.isNotEmpty) {
-                        UserLocalDataController().saveSelectedChild(childUser: childUser);
+                        LocalDataController().saveSelectedChild(childUser: childUser);
                         setState(() => _childUser = childUser);
                       }
                     },

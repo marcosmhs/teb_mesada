@@ -3,7 +3,7 @@ import 'package:teb_mesada/features/user/model/user.dart';
 
 import 'package:teb_package/teb_package.dart';
 
-class UserLocalDataController with ChangeNotifier {
+class LocalDataController with ChangeNotifier {
   var _user = User();
 
   User get localUser => User.fromMap(map: _user.toMap);
@@ -23,8 +23,12 @@ class UserLocalDataController with ChangeNotifier {
     TebLocalStorage.saveMap(key: 'user', map: user.toMap);
   }
 
-  void clearUserData() async {
+  void clearUserData() {
     TebLocalStorage.removeValue(key: 'user');
+  }
+
+  void clearSelectedChildData() {
+    TebLocalStorage.removeValue(key: 'selectedChild');
   }
 
   void saveSelectedChild({required User childUser}) {

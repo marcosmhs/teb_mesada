@@ -175,7 +175,7 @@ class _FamilyFormState extends State<FamilyForm> {
                   buttonType: TebButtonType.elevatedButton,
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: TebText(
-                    'Dados de sua família  ->',
+                    'Salvar',
                     textSize: 20,
                     textColor: Theme.of(context).canvasColor,
                   ),

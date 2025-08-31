@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teb_mesada/core/routes.dart';
 import 'package:teb_mesada/core/widget/title_text_widget.dart';
@@ -191,36 +190,36 @@ class _UserFormState extends State<UserForm> {
                   labelText: 'Nome',
                   hintText: 'Informe seu nome',
                   onSave: (value) => _user.name = value ?? '',
-                  prefixIcon: Icons.person,
                   textInputAction: TextInputAction.next,
                   focusNode: _nameFocus,
                   nextFocusNode: _phoneFocus,
                   stringValueValidatorMessage: 'O nome deve ser informado',
                 ),
                 // phone
-                TebTextEdit(
-                  context: context,
-                  controller: _user.phoneTextController,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  padding: EdgeInsets.only(bottom: 10),
-                  labelText: 'Celular',
-                  hintText: 'Seu celular',
-                  onSave: (value) => _user.phone = value ?? '',
-                  prefixIcon: FontAwesomeIcons.phone,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  focusNode: _phoneFocus,
-                  nextFocusNode: _emailFocus,
-                  validator: (value) {
-                    final finalValue = value ?? '';
-                    if (_user.userType != UserType.child &&
-                        (finalValue.trim().isEmpty || finalValue.trim() == '55')) {
-                      return 'O celular deve ser informado';
-                    }
+                if (_user.userType != UserType.child)
+                  TebTextEdit(
+                    context: context,
+                    controller: _user.phoneTextController,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: EdgeInsets.only(bottom: 10),
+                    labelText: 'Celular',
+                    hintText: 'Seu celular',
+                    onSave: (value) => _user.phone = value ?? '',
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.number,
+                    focusNode: _phoneFocus,
+                    nextFocusNode: _emailFocus,
+                    validator: (value) {
+                      final finalValue = value ?? '';
+                      if (_user.userType == UserType.child) return null;
+                      if (_user.userType != UserType.child &&
+                          (finalValue.trim().isEmpty || finalValue.trim() == '55')) {
+                        return 'O celular deve ser informado';
+                      }
 
-                    return null;
-                  },
-                ),
+                      return null;
+                    },
+                  ),
                 if (_newChild)
                   TebInfoText(
                     text:
@@ -235,9 +234,8 @@ class _UserFormState extends State<UserForm> {
                   labelText: 'Email',
                   hintText: 'Seu e-mail',
                   onSave: (value) => _user.email = value ?? '',
-                  prefixIcon: Icons.person,
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.emailAddress,
                   focusNode: _emailFocus,
                   nextFocusNode: _passwordFocus,
                   stringValueValidatorMessage: 'O e-mail deve ser informado',
@@ -254,7 +252,6 @@ class _UserFormState extends State<UserForm> {
                   onSave: (value) {
                     if (value != null && value.isNotEmpty) _user.setPassword(value);
                   },
-                  prefixIcon: Icons.lock,
                   textInputAction: TextInputAction.next,
                   focusNode: _passwordFocus,
                   nextFocusNode: _confirmPasswordFocus,
@@ -284,7 +281,6 @@ class _UserFormState extends State<UserForm> {
                   labelText: 'Repita a senha',
                   hintText: 'Informe sua senha novamente',
                   isPassword: true,
-                  prefixIcon: Icons.lock,
                   textInputAction: TextInputAction.next,
                   focusNode: _confirmPasswordFocus,
                   validator: (value) {
@@ -318,7 +314,7 @@ class _UserFormState extends State<UserForm> {
                 else
                   TebButton(
                     onPressed: () => _submit(sendToFamilyForm: false),
-                    size: Size(250, 50),
+                    size: Size(280, 50),
                     padding: EdgeInsets.symmetric(vertical: 10),
                     enabled: !_saveingData,
                     child: _saveingData
